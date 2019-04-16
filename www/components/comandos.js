@@ -12,31 +12,38 @@ $(document).on('click', '#btnMapa', function(){
     var states = {};
     states[Connection.NONE] = 'Sem conexão por favor conectar a uma rede';
 
-    alert('Connection type: ' + states[networkState], navigator.notification.beep(3), navigator.vibrate(6000));
-  }
+    /*alert('Connection type: ' + states[networkState], navigator.notification.beep(3), navigator.vibrate(6000));*/
 
-  navigator.notification.beep(1);
+    if(states[networkState] == states[Connection.NONE]){
+      alert('Tipo de conexão: ' + states[networkState]);
+       navigator.notification.beep(3);
+       navigator.vibrate(6000);
+    }
 
-  function mapa(position){
-      L.mapquest.key = 'lYrP4vF3Uk5zgTiGGuEzQGwGIVDGuy24';
+    else{
+      navigator.notification.beep(1);
 
-      var map = L.mapquest.map('map', {
-      center: [position.coords.latitude, position.coords.longitude],
-      layers: L.mapquest.tileLayer('map'),
-      zoom: 15
-      });
+      function mapa(position){
+          L.mapquest.key = 'lYrP4vF3Uk5zgTiGGuEzQGwGIVDGuy24';
 
-      L.marker([position.coords.latitude, position.coords.longitude], {
-          icon: L.mapquest.icons.marker(),
-          draggable: false
-        }).bindPopup('Denver, CO').addTo(map);
+          var map = L.mapquest.map('map', {
+          center: [position.coords.latitude, position.coords.longitude],
+          layers: L.mapquest.tileLayer('map'),
+          zoom: 15
+          });
 
-        L.circle([position.coords.latitude, position.coords.longitude], { radius: 200 }).addTo(map);
+          L.marker([position.coords.latitude, position.coords.longitude], {
+              icon: L.mapquest.icons.marker(),
+              draggable: false
+            }).bindPopup('Denver, CO').addTo(map);
 
-      map.addControl(L.mapquest.control());
-    };
-    navigator.geolocation.getCurrentPosition(mapa);
-  
+            L.circle([position.coords.latitude, position.coords.longitude], { radius: 200 }).addTo(map);
+
+          map.addControl(L.mapquest.control());
+        };
+        navigator.geolocation.getCurrentPosition(mapa);
+    }
+ }
 });
 
 $(document).on('click','#btnMapa2', function(){
